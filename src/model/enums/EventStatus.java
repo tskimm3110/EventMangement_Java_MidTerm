@@ -8,6 +8,7 @@ public enum EventStatus {
     COMPLETED,      // event finished
     CANCELLED,      // event cancelled
     POSTPONED,      // event delayed to another date
-    ARCHIVED        // old events stored for record
+    ARCHIVED,        // old events stored for record
+    UPCOMING
 }
 

@@ -80,7 +80,7 @@ public class EventDaoImpl implements EventDao{
             events.add(event);
             return events;
         }else {
-            throw new SQLException("Search Event By Code is not working.");
+            return null;
         }
     }
 
@@ -130,6 +130,48 @@ public class EventDaoImpl implements EventDao{
             events.add(event);
         }
         return events;
+    }
+
+    @Override
+    public boolean updateEvent(Event event) throws SQLException {
+        String SQL = """
+                UPDATE event SET
+                 event_code = ?,
+                 event_name = ?,
+                 event_type = ?,
+                 start_date = ?,
+                 end_date = ?,
+                 location = ?,
+                 organizer_name = ?,
+                 description = ?,
+                 status = ?,
+                 max_participant = ?
+                WHERE event_code = ?
+                """;
+        PreparedStatement pstm = conn.prepareStatement(SQL);
+        pstm.setString(1,event.getEventCode());
+        pstm.setString(2,event.getEventName());
+        pstm.setString(3,event.getEventType().toString());
+        pstm.setDate(4, Date.valueOf(event.getStartDate()));
+        pstm.setDate(5,Date.valueOf(event.getEndDate()));
+        pstm.setString(6,event.getLocation());
+        pstm.setString(7,event.getOrganizerName());
+        pstm.setString(8,event.getDescription());
+        pstm.setString(9,event.getStatus().toString());
+        pstm.setInt(10,event.getMaxParticipant());
+        pstm.setString(11,event.getEventCode());
+
+        return pstm.executeUpdate()>0;
+    }
+
+    @Override
+    public boolean deleteEvent(String code) throws SQLException {
+        String SQL = """
+                DELETE FROM event WHERE event_code = ? 
+                """;
+        PreparedStatement pstm = conn.prepareStatement(SQL);
+        pstm.setString(1,code);
+        return pstm.executeUpdate()>0;
     }
 
 

@@ -1,5 +1,6 @@
 package view;
 
+import jdk.jshell.execution.Util;
 import model.Event;
 import model.enums.EventStatus;
 import model.enums.EventType;
@@ -26,7 +27,7 @@ public class EventView {
             switch (eventOpt){
                 case "1": {
                     int pageNumber = 1;
-                    int pageSize = 10;
+                    int pageSize = 5;
                     Scanner sc = new Scanner(System.in);
 
                     while (true) {
@@ -175,6 +176,81 @@ public class EventView {
                     }catch (DateTimeException e){
                         System.out.println(e.getMessage());
                     }
+                }
+                case "4" : {
+                  try {
+                      ViewUtil.printHeader("Update Event");
+                      String code = InputUtil.getText("Enter Event Code : ");
+
+                      if(eventService.searchEventByCode(code)==null){
+                          ViewUtil.printHeader("Event Doesn't Exist !");
+                          break;
+                      }
+
+                      String name = InputUtil.getText("Event Name : ");
+                      ViewUtil.printEnumType();
+                      String eventType = String.valueOf(InputUtil.getTextWithEnum(EventType.class,"Enter Event Type : "));
+                      LocalDate startDate = null;
+                      while (startDate == null) {
+                          String input = InputUtil.getText(
+                                  "Event Start Date (yyyy-MM-dd) : "
+                          );
+
+                          try {
+                              startDate = LocalDate.parse(input, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                          } catch (DateTimeParseException e) {
+                              System.out.println("Invalid date. Example: 2999-12-02");
+                          }
+                      }
+
+                      LocalDate endDate = null;
+                      while (endDate == null) {
+                          String input = InputUtil.getText(
+                                  "Event Start Date (yyyy-MM-dd) : "
+                          );
+
+                          try {
+                              endDate = LocalDate.parse(input, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                          } catch (DateTimeParseException e) {
+                              System.out.println("Invalid date. Example: 2999-12-02");
+                          }
+                      }
+
+                      String location = InputUtil.getText("Enter Location : ");
+                      String organizerName = InputUtil.getText("Enter Organizer Name : ");
+                      String description = InputUtil.getText("Enter Event Description : ");
+
+                      ViewUtil.printEnumStatus();
+                      String eventStatus = String.valueOf(InputUtil.getTextWithEnum(EventStatus.class,"Enter Event Status : "));
+
+                      Integer maxParticipant = InputUtil.getIntegerMoreThanZero("Enter Max Participant : ");
+
+                      Event event = Event.builder()
+                              .eventCode(code)
+                              .eventName(name)
+                              .eventType(EventType.valueOf(eventType.toUpperCase()))
+                              .startDate(startDate)
+                              .endDate(endDate)
+                              .location(location)
+                              .organizerName(organizerName)
+                              .description(description)
+                              .status(EventStatus.valueOf(eventStatus))
+                              .maxParticipant(maxParticipant).build();
+                      eventService.updateEvent(event);
+                  }catch (RuntimeException e){
+                      ViewUtil.printHeader(e.getMessage());
+                  }
+                  break;
+                }
+                case "5" : {
+                   try {
+                       ViewUtil.printHeader("Delete Event");
+                       String code = InputUtil.getText("Enter Code : " );
+                       eventService.deleteEvent(code);
+                   }catch (RuntimeException e){
+                       ViewUtil.printHeader(e.getMessage());
+                   }
+                    break;
                 }
                 case "0":return;
             }

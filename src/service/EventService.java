@@ -14,4 +14,6 @@ public interface EventService {
     List<Event> searchEventByName(String name);
     List<Event> searchEventByType(String type);
     List<Event> searchEventByStartedDate(LocalDate date);
+    void updateEvent(Event event);
+    void deleteEvent(String code);
 }

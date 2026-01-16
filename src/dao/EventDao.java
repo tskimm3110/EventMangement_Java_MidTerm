@@ -15,5 +15,6 @@ public interface EventDao {
     List<Event> searchEventByName(String name) throws SQLException;
     List<Event> searchEventByType(String type) throws SQLException;
     List<Event> searchEventByStartedDate(LocalDate date) throws SQLException;
-
+    boolean updateEvent(Event event) throws SQLException;
+    boolean deleteEvent(String code) throws SQLException;
 }

@@ -4,6 +4,7 @@ import dao.EventDao;
 import dao.EventDaoImpl;
 import model.Event;
 import model.enums.EventType;
+import util.ViewUtil;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -37,7 +38,11 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<Event> searchEventByCode(String code) {
        try {
-           return eventDao.searchEventByCode(code);
+           List<Event> events = eventDao.searchEventByCode(code);
+           if(events==null){
+               throw new RuntimeException("Event doesn't Exist ! ");
+           }
+           return events;
        }catch (SQLException e){
             throw new RuntimeException(e);
        }
@@ -67,6 +72,30 @@ public class EventServiceImpl implements EventService {
             return eventDao.searchEventByStartedDate(date);
         }catch (SQLException e){
             throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void updateEvent( Event event) {
+        try {
+            if(eventDao.updateEvent(event)){
+                ViewUtil.printHeader("Event Code [ " + event.getEventCode() + " ] Updated Successfully!");
+            }
+        }catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void deleteEvent(String code) {
+        try {
+            if(eventDao.deleteEvent(code)){
+                ViewUtil.printHeader("Event Deleted Successfully! " );
+            }else {
+                throw new RuntimeException("Failed To Deleted The Event ! ");
+            }
+        }catch (SQLException e){
+            throw new RuntimeException(e.getMessage());
         }
     }
 }
