@@ -4,8 +4,11 @@ import dao.EventDao;
 import dao.EventDaoImpl;
 import model.Event;
 import model.enums.EventType;
+import telegram_bot.TelegramBot;
 import util.ViewUtil;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
@@ -27,6 +30,19 @@ public class EventServiceImpl implements EventService {
         try{
             if(eventDao.addEvent(event)){
                 System.out.println("Event added successfully !");
+                String msg = "📢 New Event Added!\n\n"
+                        + "🆔 Event Code: " + event.getEventCode() + "\n"
+                        + "📛 Event Name: " + event.getEventName() + "\n"
+                        + "📂 Type: " + event.getEventType() + "\n\n"
+                        + "📅 Start Date: " + event.getStartDate() + "\n"
+                        + "📅 End Date: " + event.getEndDate() + "\n\n"
+                        + "📍 Location: " + event.getLocation() + "\n"
+                        + "👤 Organizer: " + event.getOrganizerName() + "\n\n"
+                        + "👥 Max Participants: " + event.getMaxParticipant() + "\n"
+                        + "📌 Status: " + event.getStatus() + "\n\n"
+                        + "📝 Description:\n"
+                        + event.getDescription();
+                TelegramBot.sendMessage(msg);
             }else {
                 throw new RuntimeException("Failed To Added New Event !");
             }

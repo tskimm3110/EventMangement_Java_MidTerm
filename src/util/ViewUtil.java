@@ -6,6 +6,7 @@ import model.Participant;
 import model.enums.AttendanceStatus;
 import model.enums.EventStatus;
 import model.enums.EventType;
+import model.enums.PaymentStatus;
 import org.nocrala.tools.texttablefmt.BorderStyle;
 import org.nocrala.tools.texttablefmt.CellStyle;
 import org.nocrala.tools.texttablefmt.Table;
@@ -67,7 +68,7 @@ public class ViewUtil {
         table.setColumnWidth(0, 50, 100);
         table.addCell("Participant Menu", cellStyle);
         table.addCell("1)List All  2)Search  3)Add new  4)Update", cellStyle);
-        table.addCell("5)Delete 7) Mark Attended 0)Exit", cellStyle);
+        table.addCell("5)Delete 7) Mark Attended 8) Pay Event 0)Exit", cellStyle);
         print(table.render(), true);
     }
 
@@ -189,7 +190,15 @@ public class ViewUtil {
         print(table.render(), true);
     }
 
+    public static void printEnumPaymentStatus(){
 
+        ViewUtil.printHeader("Payment Status");
+
+        for(PaymentStatus e : PaymentStatus.values()){
+            System.out.println(e);
+        }
+
+    }
     public static void printEnumStatus(){
 
         ViewUtil.printHeader("Event Status");

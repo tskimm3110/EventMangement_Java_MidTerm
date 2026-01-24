@@ -9,4 +9,5 @@ public interface ParticipantService {
     boolean addParticipant(Participant participant);
     boolean markAttended(String attende, String ccode);
     boolean findParticipantByCode(String code);
+    boolean payForEvent(String payType, String code);
 }

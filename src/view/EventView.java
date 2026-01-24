@@ -157,6 +157,7 @@ public class EventView {
                     }catch (DateTimeException e){
                         System.out.println(e.getMessage());
                     }
+                    break;
                 }
                 case "4" : {
                   try {

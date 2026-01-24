@@ -75,14 +75,10 @@ public class ParticipantView {
                     LocalDate registrationDate = null;
                     while (true) {
                         String input = InputUtil.getText(
-                                "Event Registration Date (yyyy-MM-dd) [0 To Skip]  : "
+                                "Event Registration Date (yyyy-MM-dd)   : "
                         );
 
                         try {
-                            if(input.equals("0")){
-                                break;
-                            }
-
                             registrationDate = LocalDate.parse(input, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                             break;
                         } catch (DateTimeParseException e) {
@@ -114,20 +110,43 @@ public class ParticipantView {
                     break;
                 }
                 case "7":{
-//                   try {
+                   try {
                        ViewUtil.printHeader("Mark Attending");
                        String code = InputUtil.getText("Enter Participant Code : ");
                        if(!participantService.findParticipantByCode(code)){
                            return;
                        }
                        ViewUtil.printEnumAttended();
-                       String att = String.valueOf(InputUtil.getTextWithEnum(AttendanceStatus.class,"Enter Attended Status : "));
-                        if(participantService.markAttended(att,code)){
+                       String att = String.valueOf(InputUtil.getTextWithEnum(AttendanceStatus.class,"Enter Attended Status ( 0 To Exit ) : "));
+                       if(att.equals("null")){
+                           break;
+                       }
+                       if(participantService.markAttended(att,code)){
                             ViewUtil.printHeader("Marked Attendance : " + att  + " Successfully! ");
                         }
-                       //                   }catch (RuntimeException e){
-//                       ViewUtil.printHeader(e.getMessage());
-//                   }
+                    }catch (RuntimeException e){
+                       ViewUtil.printHeader(e.getMessage());
+                   }
+                    break;
+                }
+                case "8":{
+                    try {
+                        ViewUtil.printHeader("Participant Pay For Event");
+                        String code = InputUtil.getText("Enter Participant Code");
+                        if(!participantService.findParticipantByCode(code)){
+                            return;
+                        }
+                        ViewUtil.printEnumPaymentStatus();
+                        String payment = String.valueOf(InputUtil.getTextWithEnum(PaymentStatus.class,"Enter Payment Status ( 0 To Exit ) : "));
+                        if(payment.equals("null")){
+                            break;
+                        }
+                        if(participantService.payForEvent(payment,code)  ){
+                            ViewUtil.printHeader("Payment status has been change to : " + payment + " !");
+                        }
+                    }catch (RuntimeException e){
+                        ViewUtil.printHeader(e.getMessage());
+                    }
                     break;
                 }
                 case "0": return;
