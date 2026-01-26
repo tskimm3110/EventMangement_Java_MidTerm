@@ -32,54 +32,61 @@ public class EventView {
                 case "2":{
                     ViewUtil.printSearchEventMenu();
                     String searchOpt = InputUtil.getText("Search By : ");
-                    if(searchOpt.equals("1")){
-                        String code = InputUtil.getText("Enter Event Code : ");
-                        try {
-                            Event event = eventService.searchEventByCode(code);
-                            ViewUtil.printEventDetailNotList(event);
-                        }catch (RuntimeException e){
-                            ViewUtil.printHeader(e.getMessage());
-                        }
-                    }
-                    if(searchOpt.equals("2")){
-                        String name = InputUtil.getText("Enter Event Name : ");
-                        try {
-                            List<Event> event = eventService.searchEventByName(name);
-                            ViewUtil.printEventDetail(event);
-                        }catch (RuntimeException e){
-                            ViewUtil.printHeader(e.getMessage());
-                        }
-                    }
-                    if(searchOpt.equals("3")){
-                       try {
-                           ViewUtil.printEnumType();
-                           String eventType = String.valueOf(InputUtil.getTextWithEnum(EventType.class,"Enter Event Type : "));
-                           ViewUtil.printEventDetail(eventService.searchEventByType(eventType));
-                       }catch (RuntimeException e){
-                           ViewUtil.printHeader(e.getMessage());
-                       }
-                    }
-                    if(searchOpt.equals("4")){
-                        try {
-                            LocalDate startDate = null;
-                            while (startDate == null) {
-                                String input = InputUtil.getText(
-                                        "Event Start Date (yyyy-MM-dd) : "
-                                );
-
-                                try {
-                                    startDate = LocalDate.parse(input, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-                                } catch (DateTimeParseException e) {
-                                    System.out.println("Invalid date. Example: 2999-12-02");
-                                }
+                    switch (searchOpt){
+                        case "1":{
+                            String code = InputUtil.getText("Enter Event Code : ");
+                            try {
+                                Event event = eventService.searchEventByCode(code);
+                                ViewUtil.printEventDetailNotList(event);
+                            }catch (RuntimeException e){
+                                ViewUtil.printHeader(e.getMessage());
                             }
-
-                            ViewUtil.printEventDetail(eventService.searchEventByStartedDate(startDate));
-                        }catch (RuntimeException e){
-                            ViewUtil.printHeader(e.getMessage());
+                            break;
                         }
+                        case "2":{
+                            String name = InputUtil.getText("Enter Event Name : ");
+                            try {
+                                List<Event> event = eventService.searchEventByName(name);
+                                ViewUtil.printEventDetail(event);
+                            }catch (RuntimeException e){
+                                ViewUtil.printHeader(e.getMessage());
+                            }
+                            break;
+                        }
+                        case "3":{
+                            try {
+                                ViewUtil.printEnumType();
+                                String eventType = String.valueOf(InputUtil.getTextWithEnum(EventType.class,"Enter Event Type : "));
+                                ViewUtil.printEventDetail(eventService.searchEventByType(eventType));
+                            }catch (RuntimeException e){
+                                ViewUtil.printHeader(e.getMessage());
+                            }
+                            break;
+                        }
+                        case "4":{
+                            try {
+                                LocalDate startDate = null;
+                                while (startDate == null) {
+                                    String input = InputUtil.getText(
+                                            "Event Start Date (yyyy-MM-dd) : "
+                                    );
+
+                                    try {
+                                        startDate = LocalDate.parse(input, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                                    } catch (DateTimeParseException e) {
+                                        System.out.println("Invalid date. Example: 2999-12-02");
+                                    }
+                                }
+
+                                ViewUtil.printEventDetail(eventService.searchEventByStartedDate(startDate));
+                            }catch (RuntimeException e){
+                                ViewUtil.printHeader(e.getMessage());
+                            }
+                            break;
+                        }
+                        case "0":break;
                     }
-                    break;
+                   break;
                 }
                 case "3" : {
 

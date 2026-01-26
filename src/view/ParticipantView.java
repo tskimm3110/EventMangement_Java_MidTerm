@@ -1,5 +1,6 @@
 package view;
 
+import dao.ParticipantDao;
 import model.Event;
 import model.Participant;
 import model.enums.AttendanceStatus;
@@ -7,6 +8,7 @@ import model.enums.EventType;
 import model.enums.Gender;
 import model.enums.PaymentStatus;
 import service.EventService;
+import service.EventServiceImpl;
 import service.ParticipantService;
 import util.InputUtil;
 import util.ViewUtil;
@@ -48,6 +50,48 @@ public class ParticipantView {
                     break;
                 }
                 case "2":{
+                    ViewUtil.printSearchParticipantMenu();
+                    String searchOpt = InputUtil.getText("Search By : ");
+
+                    switch (searchOpt){
+                        case "1":{
+                            String name = InputUtil.getText("Enter Participant Name : ");
+                            try {
+                                ViewUtil.printParticipantDetail(participantService.searchByName(name));
+                            }catch (RuntimeException e){
+                                ViewUtil.printHeader(e.getMessage());
+                            }
+                            break;
+                        }
+                        case "2":{
+                            String code = InputUtil.getText("Enter Participant Code : ");
+                            try {
+                                ViewUtil.printParticipantDetail(List.of(participantService.searchByCode(code)));
+                            }catch (RuntimeException e){
+                                ViewUtil.printHeader(e.getMessage());
+                            }
+                            break;
+                        }
+                        case "3":{
+                            String phoneNumber = InputUtil.getText("Enter Participant Phone Number : ");
+                            try {
+                                ViewUtil.printParticipantDetail(List.of(participantService.searchByPhoneNumber(phoneNumber)));
+                            }catch (RuntimeException e) {
+                                ViewUtil.printHeader(e.getMessage());
+                            }
+                            break;
+                        }
+                        case "4":{
+                            String eventName= InputUtil.getText("Enter Event Name : ");
+                            try {
+                                ViewUtil.printParticipantDetail(participantService.searchByEvent(eventName));
+                            }catch (RuntimeException e){
+                                ViewUtil.printHeader(e.getMessage());
+                            }
+                            break;
+                        }
+                        case "0":break;
+                    }
                     break;
                 }
                 case "3":{
@@ -107,6 +151,96 @@ public class ParticipantView {
                             .build();
 
                     participantService.addParticipant(participant);
+                    break;
+                }
+                case "4":{
+                    ViewUtil.printHeader("Update Participant");
+                   try {
+                       String code = InputUtil.getText("Enter Participant Code : ");
+                       if(!participantService.findParticipantByCode(code)) break;
+                       ViewUtil.printParticipantDetail(List.of(participantService.searchByCode(code)));
+                       String name = InputUtil.getText("Enter New Name [ 0 To Skip ] : ");
+                       if(name.equals("0")) name=null;
+                       Gender gender = InputUtil.getTextWithEnum(Gender.class,"Enter Participant Gender [ 0 To Skip ] : ");
+                       String address = InputUtil.getText("Enter New Address [ 0 To Skip ] : ");
+                       if(address.equals("0")) address =null;
+                       String role = InputUtil.getText("Enter New Role [ 0 To Skip ] : ");
+                       if(role.equals("0")) role=null;
+                       String email = InputUtil.getText("Enter New Email [ 0 To Skip ] : ");
+                       if(email.equals("0")) email=null;
+                       String phone = InputUtil.getText("Enter New Phone [ 0 To Skip ] : ");
+                       if(phone.equals("0")) phone=null;
+                        EventView.getEvent(eventService);
+
+//                        String eventCode = InputUtil.getText("Enter New Event By Code [ 0 To Skip ] : ");
+//                       if(eventCode.equals("0")) eventCode=null;
+//                       Integer id = null;
+//                       Event event = eventService.searchEventByCode(eventCode);
+//                       if(event == null) break;
+//                        id = event.getId();
+
+                       Integer id = null;
+
+                       while (true) {
+                           String eventCode = InputUtil.getText(
+                                   "Enter New Event By Code [ 0 To Skip ] : "
+                           );
+                           if (eventCode.equals("0")) {
+                               break;
+                           }
+                           try {
+                               Event event = eventService.searchEventByCode(eventCode);
+                               id = event.getId();
+                               break;
+                           } catch (RuntimeException e) {
+                               ViewUtil.printHeader(e.getMessage());
+                           }
+                       }
+
+
+                       LocalDate registerDate = null;
+                       while (true) {
+                           String input = InputUtil.getText( "Enter New Registration Date (yyyy-MM-dd) [0 To Skip]  : ");
+                           try {
+                               if(input.equals("0"))break;
+                               registerDate = LocalDate.parse(input, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                               break;
+                           } catch (DateTimeParseException e) {
+                               System.out.println("Invalid date. Example: 2999-12-02");
+                           }
+                       }
+
+                       String remark = InputUtil.getText("Enter New Remarks [ 0 To Skip ] : ");
+                       if(remark.equals("0")) remark=null;
+
+                       System.out.println(id);
+
+                       Participant participant = Participant.builder()
+                               .participantCode(code)
+                               .fullName(name)
+                               .gender(gender)
+                               .email(email)
+                               .phone(phone)
+                               .role(role)
+                               .eventId(id)
+                               .registrationDate(registerDate)
+                               .remarks(remark)
+                               .build();
+                       participantService.update(code,participant);
+                   }catch (RuntimeException e){
+                       ViewUtil.printHeader(e.getMessage());
+                   }
+
+                    break;
+                }
+                case "5":{
+                    try {
+                        String code = InputUtil.getText("Enter Participant Code : ");
+                        participantService.deleteByCode(code);
+                        ViewUtil.printHeader("Participant Record Deleted Successfully!");
+                    }catch (RuntimeException e){
+                        ViewUtil.printHeader(e.getMessage());
+                    }
                     break;
                 }
                 case "7":{

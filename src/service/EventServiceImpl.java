@@ -118,39 +118,19 @@ public class EventServiceImpl implements EventService {
     public void updateEvent( String code, Event event) {
         try {
             Event ev = searchEventByCode(code);
-            if(event.getEventName()!=null){
-                ev.setEventName(event.getEventName());
-            }
-            if(event.getEventType()!=null){
-                ev.setEventType(event.getEventType());
-            }
-            if(event.getStartDate()!=null){
-                ev.setStartDate(event.getStartDate());
-            }
-            if(event.getEndDate()!=null){
-                ev.setEndDate(event.getEndDate());
-            }
-            if(event.getLocation()!=null){
-                ev.setLocation(event.getLocation());
-            }
-            if(event.getOrganizerName()!=null){
-                ev.setOrganizerName(event.getOrganizerName());
-            }
-            if(event.getDescription()!=null){
-                ev.setDescription(event.getDescription());
-            }
-            if(event.getStatus()!=null){
-                ev.setStatus(event.getStatus());
-            }
-            if(event.getMaxParticipant()!=null){
-                ev.setMaxParticipant(event.getMaxParticipant());
-            }
+            if(event.getEventName()!=null) ev.setEventName(event.getEventName());
+            if(event.getEventType()!=null) ev.setEventType(event.getEventType());
+            if(event.getStartDate()!=null) ev.setStartDate(event.getStartDate());
+            if(event.getEndDate()!=null) ev.setEndDate(event.getEndDate());
+            if(event.getLocation()!=null) ev.setLocation(event.getLocation());
+            if(event.getOrganizerName()!=null) ev.setOrganizerName(event.getOrganizerName());
+            if(event.getDescription()!=null) ev.setDescription(event.getDescription());
+            if(event.getStatus()!=null) ev.setStatus(event.getStatus());
+            if(event.getMaxParticipant()!=null) ev.setMaxParticipant(event.getMaxParticipant());
 
 
+            if(eventDao.updateEvent(ev)) ViewUtil.printHeader("Event Code [ " + event.getEventCode() + " ] Updated Successfully!");
 
-            if(eventDao.updateEvent(ev)){
-                ViewUtil.printHeader("Event Code [ " + event.getEventCode() + " ] Updated Successfully!");
-            }
         }catch (SQLException e){
             throw new RuntimeException(e);
         }

@@ -50,6 +50,15 @@ public class ViewUtil {
         table.addCell("0)Exit", cellStyle);
         print(table.render(), true);
     }
+    public static void printSearchParticipantMenu() {
+        CellStyle cellStyle = new CellStyle(CellStyle.HorizontalAlign.center);
+        Table table = new Table(1, BorderStyle.UNICODE_ROUND_BOX_WIDE);
+        table.setColumnWidth(0, 50, 100);
+        table.addCell("Search Options", cellStyle);
+        table.addCell("1)By Name  2)By Code  3)By Phone Number  4)By Event", cellStyle);
+        table.addCell("0)Exit", cellStyle);
+        print(table.render(), true);
+    }
 
 
     public static void printMenuEvent() {
@@ -281,6 +290,7 @@ public class ViewUtil {
         table.addCell("REMARKS");
         table.addCell("ATTENDANCE");
 
+        EventService eventService = new EventServiceImpl();
 
         // 3. Add table data
         for (Participant participant : participantList) {
@@ -292,7 +302,7 @@ public class ViewUtil {
             table.addCell(participant.getRole());
             table.addCell(participant.getEmail());
             table.addCell(participant.getPhone());
-            table.addCell(participant.getEventId().toString());
+            table.addCell(eventService.searchEventById(participant.getEventId()).getEventName());
             table.addCell(participant.getRegistrationDate().toString());
             table.addCell(participant.getPaymentStatus().toString());
             table.addCell(participant.getRemarks());

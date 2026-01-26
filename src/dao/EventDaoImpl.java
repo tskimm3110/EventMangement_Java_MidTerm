@@ -69,7 +69,7 @@ public class EventDaoImpl implements EventDao{
     @Override
     public  Event searchEventByCode(String code) throws SQLException {
         String SQL = """
-                SELECT * FROM event WHERE event_code = ?
+                SELECT * FROM event WHERE event_code = ?    
                 """;
         PreparedStatement pstm = conn.prepareStatement(SQL);
         pstm.setString(1,code);
