@@ -13,6 +13,7 @@ import org.nocrala.tools.texttablefmt.Table;
 import service.EventService;
 import service.EventServiceImpl;
 
+import javax.swing.text.View;
 import java.util.List;
 
 public class ViewUtil {
@@ -40,6 +41,18 @@ public class ViewUtil {
         table.addCell("2 ) Manage Participants", cellStyle);
         table.addCell("0 ) Exit", cellStyle);
         print(table.render(), true);    }
+
+
+    public static void login(){
+            CellStyle cellStyle = new CellStyle(CellStyle.HorizontalAlign.center);
+            Table table = new Table(1, BorderStyle.UNICODE_ROUND_BOX_WIDE);
+            ViewUtil.printHeader("========Welcome To Event Management System========");
+            table.setColumnWidth(0, 50, 200);
+            table.addCell("1 ) Login", cellStyle);
+            table.addCell("0 ) Exit", cellStyle);
+            print(table.render(), true);    }
+
+
 
     public static void printSearchEventMenu() {
         CellStyle cellStyle = new CellStyle(CellStyle.HorizontalAlign.center);

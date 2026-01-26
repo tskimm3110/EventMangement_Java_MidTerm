@@ -19,7 +19,6 @@ import java.util.Scanner;
 
 public class EventView {
 
-
     public void eventViewMenu(EventService eventService){
         do{
             ViewUtil.printMenuEvent();
@@ -177,25 +176,15 @@ public class EventView {
                       }
 
                       String name = InputUtil.getText("Event Name [0 To Skip] : ");
-                      if(name.equals("0")){
-                          name=null;
-                      }
-
-
+                      if(name.equals("0"))name=null;
                       ViewUtil.printEnumType();
                       EventType eventType = InputUtil.getTextWithEnum(EventType.class,"Enter Event Type [0 To Skip] : ");
 
                       LocalDate startDate = null;
                       while (true) {
-                          String input = InputUtil.getText(
-                                  "Event Start Date (yyyy-MM-dd) [0 To Skip]  : "
-                          );
-
+                          String input = InputUtil.getText("Event Start Date (yyyy-MM-dd) [0 To Skip]  : ");
                           try {
-                              if(input.equals("0")){
-                                  break;
-                              }
-
+                              if(input.equals("0"))break;
                               startDate = LocalDate.parse(input, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                               break;
                           } catch (DateTimeParseException e) {
@@ -205,44 +194,26 @@ public class EventView {
 
                       LocalDate endDate = null;
                       while (true) {
-                          String input = InputUtil.getText(
-                                  "Event End Date (yyyy-MM-dd) [0 To Skip] : "
-                          );
+                          String input = InputUtil.getText("Event End Date (yyyy-MM-dd) [0 To Skip] : ");
 
                           try {
-                              if(input.equals("0")){
-                                break;
-                              }
-
+                              if(input.equals("0")) break;
                               endDate = LocalDate.parse(input, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                                 break;
                           } catch (DateTimeParseException e) {
                               System.out.println("Invalid date. Example: 2999-12-02");
                           }
                       }
-
                       String location = InputUtil.getText("Enter Location  [0 To Skip] : ");
-                      if(location.equals("0")){
-                          location=null;
-                      }
+                      if(location.equals("0")) location=null;
                       String organizerName = InputUtil.getText("Enter Organizer Name [0 To Skip] : ");
-                      if(organizerName.equals("0")){
-                          organizerName=null;
-                      }
+                      if(organizerName.equals("0")) organizerName=null;
                       String description = InputUtil.getText("Enter Event Description [0 To Skip] : ");
-                      if(description.equals("0")){
-                          description=null;
-                      }
+                      if(description.equals("0")) description=null;
                       ViewUtil.printEnumStatus();
                       EventStatus eventStatus = InputUtil.getTextWithEnum(EventStatus.class,"Enter Event Status [0 To Skip] : ");
-
-
-
-
                       Integer maxParticipant = InputUtil.getIntegerMoreThanZero("Enter Max Participant [0 To Skip] : ");
-                      if(maxParticipant.equals(0)){
-                          maxParticipant=null;
-                      }
+                      if(maxParticipant.equals(0)) maxParticipant=null;
                       Event event = Event.builder()
                               .eventCode(code)
                               .eventName(name)

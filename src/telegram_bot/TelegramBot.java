@@ -26,7 +26,7 @@ public class TelegramBot {
             conn.getInputStream();
             System.out.println("Message sent successfully to Telegram!");
         }catch (MalformedURLException e){
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
