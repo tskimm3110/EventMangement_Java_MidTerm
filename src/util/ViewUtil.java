@@ -15,6 +15,8 @@ import service.EventServiceImpl;
 
 import javax.swing.text.View;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ViewUtil {
 
@@ -29,7 +31,12 @@ public class ViewUtil {
                 """);
     }
 
-
+    public static boolean isValidEmail(String email) {
+        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
 
     public static void mainMenu(){
         CellStyle cellStyle = new CellStyle(CellStyle.HorizontalAlign.center);
@@ -272,8 +279,8 @@ public class ViewUtil {
             table.addCell(participant.getFullName());
             table.addCell(participant.getGender().toString());
             table.addCell(participant.getRole());
-            table.addCell(participant.getPhone());
             table.addCell(participant.getEmail());
+            table.addCell(participant.getPhone());
             table.addCell(eventService.searchEventById(participant.getEventId()).getEventName());
 //            table.addCell(participant.getEventId().toString());
             table.addCell(participant.getPaymentStatus().toString());

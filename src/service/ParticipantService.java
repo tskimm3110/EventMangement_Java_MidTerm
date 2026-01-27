@@ -12,6 +12,7 @@ public interface ParticipantService {
     boolean findParticipantByCode(String code);
     boolean payForEvent(String payType, String code);
     List<Participant> searchByName(String name);
+    boolean findByPhone(String phone);
     Participant searchByCode(String code);
     Participant searchByPhoneNumber(String phoneNumber);
     List<Participant> searchByEvent(String eventName);

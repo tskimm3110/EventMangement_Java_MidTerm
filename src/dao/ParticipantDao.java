@@ -12,6 +12,7 @@ public interface ParticipantDao {
     boolean markAttended(String attended ,String code) throws SQLException;
     boolean payEvent(String payType ,String code) throws SQLException;
     Participant findParticipantByCode(String code) throws SQLException;
+    boolean findParticipantByPhone(String phone) throws SQLException;
     List<Participant> searchParticipantByName(String name) throws SQLException;
     Participant searchParticipantByCode(String code) throws SQLException;
     Participant searchParticipantByPhoneNumber(String phoneNumber) throws SQLException;

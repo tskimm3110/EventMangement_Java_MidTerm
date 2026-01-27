@@ -3,6 +3,7 @@ package util;
 import javax.swing.text.View;
 import java.math.BigDecimal;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class InputUtil {
 
@@ -34,6 +35,12 @@ public class InputUtil {
         }
     }
 
+
+    public static boolean isValidPhone(String phone) {
+        // Digits only, length 8–15
+        String phoneRegex = "^[0-9]{8,15}$";
+        return Pattern.matches(phoneRegex, phone);
+    }
 
     public static String getText(String label) {
         do{

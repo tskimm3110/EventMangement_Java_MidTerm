@@ -17,7 +17,7 @@ public class ParticipantDaoImpl implements ParticipantDao{
     @Override
     public List<Participant> getAllParticipant(int pageNumber, int pageSize) throws SQLException {
         String SQL = """
-                    SELECT * FROM participant ORDER BY id LIMIT ? OFFSET ?
+                    SELECT * FROM participant ORDER BY id DESC LIMIT ? OFFSET ?
                     """;
         PreparedStatement preparedStatement = conn.prepareStatement(SQL);
         preparedStatement.setInt(1,pageSize);
@@ -93,6 +93,21 @@ public class ParticipantDaoImpl implements ParticipantDao{
         }
         return null;
     }
+
+    @Override
+    public boolean findParticipantByPhone(String phone) throws SQLException {
+        String SQL = """
+                SELECT * FROM participant WHERE phone = ?
+                """;
+        PreparedStatement pstm = conn.prepareStatement(SQL);
+        pstm.setString(1,phone);
+        ResultSet rs = pstm.executeQuery();
+        if(rs.next()){
+            return true;
+        }
+        System.out.println("Not exist!");
+        return false;    }
+
 
     @Override
     public List<Participant> searchParticipantByName(String name) throws SQLException {

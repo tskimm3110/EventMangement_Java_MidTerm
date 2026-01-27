@@ -71,6 +71,7 @@ public class ParticipantServiceImpl implements ParticipantService{
         }
     }
 
+
     @Override
     public boolean payForEvent(String payType, String code) {
         try {
@@ -91,6 +92,19 @@ public class ParticipantServiceImpl implements ParticipantService{
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public boolean findByPhone(String phone) {
+        try {
+            if(participantDao.findParticipantByPhone(phone)==true){
+                return false;
+            }
+            return true;
+        }catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+
 
     @Override
     public Participant searchByCode(String code) {

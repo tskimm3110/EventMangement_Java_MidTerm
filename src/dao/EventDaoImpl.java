@@ -24,7 +24,7 @@ public class EventDaoImpl implements EventDao{
     public List<Event> getAllEvent(int pageNumber, int pageSize) throws SQLException {
 
         String SQL = """
-                    SELECT * FROM event ORDER BY id LIMIT ? OFFSET ?
+                    SELECT * FROM event ORDER BY id DESC LIMIT ? OFFSET ?
                     """;
         PreparedStatement preparedStatement = conn.prepareStatement(SQL);
         preparedStatement.setInt(1,pageSize);

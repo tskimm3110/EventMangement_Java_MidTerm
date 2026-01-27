@@ -245,27 +245,45 @@ public class EventView {
             }
         }while (true);
     }
-    public static void getEvent(EventService eventService){
+    public static void getEvent(EventService eventService) {
         int pageNumber = 1;
         int pageSize = 5;
         Scanner sc = new Scanner(System.in);
 
         while (true) {
             List<Event> eventsPage = eventService.getAllEvent(pageNumber, pageSize);
+
+            if (eventsPage.isEmpty()) {
+                System.out.println("No events found.");
+                break;
+            }
+
             ViewUtil.printEventList(eventsPage);
 
             System.out.println("\nOptions: N = Next, P = Previous, Q = Quit");
             String input = sc.nextLine().trim().toUpperCase();
 
             if (input.equals("N")) {
-                pageNumber++;
-            } else if (input.equals("P") && pageNumber > 1) {
-                pageNumber--;
+                if (eventsPage.size() < pageSize) {
+                    System.out.println("This is the last page.");
+                } else {
+                    pageNumber++;
+                }
+
+            } else if (input.equals("P")) {
+                if (pageNumber > 1) {
+                    pageNumber--;
+                } else {
+                    System.out.println("This is the first page.");
+                }
+
             } else if (input.equals("Q")) {
                 break;
+
             } else {
                 System.out.println("Invalid option.");
             }
         }
     }
+
 }

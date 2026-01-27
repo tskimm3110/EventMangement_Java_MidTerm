@@ -13,7 +13,9 @@ import service.ParticipantService;
 import util.InputUtil;
 import util.ViewUtil;
 
+import javax.swing.*;
 import java.awt.image.SinglePixelPackedSampleModel;
+import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -26,29 +28,49 @@ public class ParticipantView {
             ViewUtil.printMenuParticipant();
             String participantOpt = InputUtil.getText("Enter Option : ");
             switch (participantOpt){
-                case "1":{
+                case "1": {
                     int pageNumber = 1;
                     int pageSize = 5;
                     Scanner sc = new Scanner(System.in);
-                    while (true){
-                        List<Participant> participants = participantService.getAllParticipants(pageNumber,pageSize);
+
+                    while (true) {
+                        List<Participant> participants =
+                                participantService.getAllParticipants(pageNumber, pageSize);
+
+                        if (participants.isEmpty()) {
+                            System.out.println("No participants found.");
+                            break;
+                        }
+
                         ViewUtil.printParticipant(participants);
 
                         System.out.println("\nOptions: N = Next, P = Previous, Q = Quit");
                         String input = sc.nextLine().trim().toUpperCase();
 
                         if (input.equals("N")) {
-                            pageNumber++;
-                        } else if (input.equals("P") && pageNumber > 1) {
-                            pageNumber--;
+                            if (participants.size() < pageSize) {
+                                System.out.println("This is the last page.");
+                            } else {
+                                pageNumber++;
+                            }
+
+                        } else if (input.equals("P")) {
+                            if (pageNumber > 1) {
+                                pageNumber--;
+                            } else {
+                                System.out.println("This is the first page.");
+                            }
+
                         } else if (input.equals("Q")) {
                             break;
+
                         } else {
                             System.out.println("Invalid option.");
                         }
                     }
                     break;
                 }
+
                 case "2":{
                     ViewUtil.printSearchParticipantMenu();
                     String searchOpt = InputUtil.getText("Search By : ");
@@ -113,8 +135,29 @@ public class ParticipantView {
                     String gender = String.valueOf(InputUtil.getTextWithEnum(Gender.class,"Enter Participant Gender : "));
                     String address = InputUtil.getText("Enter Participant Address : ");
                     String role = InputUtil.getText("Enter Participant Role : ");
-                    String email = InputUtil.getText("Enter Email : ");
-                    String phone = InputUtil.getText("Enter Phone Number : ");
+                    String email;
+                    while (true) {
+                        email = InputUtil.getText("Enter Email : ");
+                        if (ViewUtil.isValidEmail(email)) {
+                            break;
+                        } else {
+                            System.out.println("Invalid email! Please enter a valid email address.");
+                        }
+                    }
+
+                    String phone;
+                    while (true) {
+                        phone = InputUtil.getText("Enter Phone Number : ");
+                        if (InputUtil.isValidPhone(phone)) {
+                            break;
+                        } else {
+                            ViewUtil.printHeader("Invalid phone number! Digits only (8–15 numbers).");
+                        }
+                    }
+                    if(participantService.findByPhone(phone) == false){
+                        ViewUtil.printHeader("Phone number already registered!");
+                        break;
+                    }
 
                     LocalDate registrationDate = null;
                     while (true) {

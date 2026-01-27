@@ -29,7 +29,7 @@ public class Main {
             switch (opt){
                 case "1" :{
                     Auth auth = new Auth();
-                    String email = InputUtil.getText("Enter Email  : ");
+                    String email = InputUtil.getText("Enter Username  : ");
                     String password = InputUtil.getText("Enter Password : ");
                     isLogin = auth.login(email,password);
                     if(isLogin){
