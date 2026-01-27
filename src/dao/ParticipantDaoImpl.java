@@ -105,7 +105,6 @@ public class ParticipantDaoImpl implements ParticipantDao{
         if(rs.next()){
             return true;
         }
-        System.out.println("Not exist!");
         return false;    }
 
 
